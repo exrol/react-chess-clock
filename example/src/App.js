@@ -6,7 +6,7 @@ const App = () => {
 
   const [whiteTimer, blackTimer, toggleTimer, pauseTimer, resetTimer] = useChessClock()
      
-  //Display for example
+  //Basic display
   return (
       <div>
           <p>White timer : {whiteTimer}</p>
