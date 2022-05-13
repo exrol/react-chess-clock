@@ -1,10 +1,21 @@
 import React from 'react'
 
-import { ExampleComponent } from 'react-chess-clock'
-import 'react-chess-clock/dist/index.css'
+import useChessClock from 'react-chess-clock'
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
+
+  const [whiteTimer, blackTimer, toggleTimer, pauseTimer, resetTimer] = useChessClock()
+     
+  //Display for example
+  return (
+      <div>
+          <p>White timer : {whiteTimer}</p>
+          <p>Black timer : {whiteTimer}</p>
+          <button onClick={() => toggleTimer()}>Toggle</button>
+          <button onClick={() => resetTimer()}>Reset Timer</button>       
+          <button onClick={() => pauseTimer()}>Pause Timer</button>          
+      </div>
+  )
 }
 
 export default App
