@@ -1,8 +1,11 @@
 {
   "name": "react-chess-clock",
   "version": "1.0.0",
-  "description": "Customisable React chess clock component",
-  "author": "exrol",
+  "description": "React chess clock",
+  "author": {
+    "name": "exrol",
+    "email": "exrol@protomail.com"
+  },
   "license": "MIT",
   "repository": "exrol/react-chess-clock",
   "main": "dist/index.js",
@@ -11,6 +14,16 @@
   "engines": {
     "node": ">=10"
   },
+  "keywords": [
+    "react",
+    "hook",
+    "react hook",
+    "chess",
+    "clock",
+    "chess clock",
+    "timer"
+  ],
+  "homepage": "https://github.com/exrol/react-chess-clock",
   "scripts": {
     "build": "microbundle-crl --no-compress --format modern,cjs",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
