@@ -19,8 +19,8 @@ import useChessClock from 'react-chess-clock'
 
 const App = () => {
 
-  const initialTimer = 2
-  const increment = 5
+  const initialTimer = 6000 // 10 minutes
+  const increment = 5 // optionnal
 
   const [players, clock] = useChessClock(initialTimer, increment)
 
