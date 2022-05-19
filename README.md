@@ -86,7 +86,7 @@ players = {
 
 ### Clock
 
->  Clock object provides you informations about clock status & function to interact with the clock
+>  Clock object provides you informations about clock status & functions to interact with the clock
 
 ```js
 clock = {
