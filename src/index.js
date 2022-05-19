@@ -1,34 +1,51 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 // React chess clock hook
-export default function useChessClock(initialTimer = 3, increment = 5) {
+export default function useChessClock(initialTimer = 600, increment = 5) {
 
-  //Player timers
-  const [whiteTimer, setWhiteTimer] = useState(initialTimer * 1000); // set time in milliseconds
-  const [blackTimer, setBlackTimer] = useState(initialTimer * 1000);
+  const initialTime = initialTimer * 1000 // in ms
+
+  //Player timers & statistics
+  const [whiteTimer, setWhiteTimer] = useState(initialTime); // set time in milliseconds
+  const [blackTimer, setBlackTimer] = useState(initialTime);
+  const [whiteTurn, setWhiteTurn] = useState(0);
+  const [blackTurn, setBlackTurn] = useState(0);
 
   //Clock logic
   const [activePlayer, setActivePlayer] = useState(null);
   const [pausedPlayer, setPausedPlayer] = useState(null)
 
+  //State accessors
   const isClockActive = activePlayer !== null;
-  const setActiveTimer = activePlayer === 'white' ? setWhiteTimer : setBlackTimer
-  const activeTimer = activePlayer === 'white' ? whiteTimer : blackTimer
-
   const isGameOver = blackTimer <= 0 || whiteTimer <= 0
-  useEffect(() => {
-    let interval;
 
-    if (isClockActive && !isGameOver) {
-      interval = setInterval(() => {
+  const intervalRef = useRef(null)
+
+  if (isGameOver && activePlayer !== null) {
+    setActivePlayer(null)
+  }
+
+  //State setters
+  const setActiveTimer = activePlayer === 'white' ? setWhiteTimer : setBlackTimer
+
+
+  //Timer logic
+  useEffect(() => {
+
+    if (isClockActive) {
+      intervalRef.current = setInterval(() => {
         setActiveTimer((timer) => timer - 10);
       }, 10);
     }
 
-    return () => clearInterval(interval);
+    return () => clearInterval(intervalRef.current);
   }, [activePlayer]);
 
+
   const startTimer = () => {
+    if (isGameOver) {
+      return
+    }
 
     if (activePlayer !== null) {
       return;
@@ -37,24 +54,84 @@ export default function useChessClock(initialTimer = 3, increment = 5) {
     setActivePlayer('white');
   }
 
-  const toggleTimer = () => activePlayer === 'white' ? setActivePlayer('black') : setActivePlayer('white')
+  /**
+   * (Toggling the clock if inactive, starts the timer for white player)
+   */
+  const toggleTimer = () => {
+    if (isGameOver) {
+      return
+    }
 
-  const togglePause = () => {
-    if (pausedPlayer) {
-      setActivePlayer(pausedPlayer);
-      setPausedPlayer(null);
+    if (activePlayer === 'white') {
+      setActivePlayer('black')
+      setBlackTurn(blackTurn + 1)
+
     } else {
-      setPausedPlayer(activePlayer);
-      setActivePlayer(null);
+      setWhiteTurn(whiteTurn + 1);
+      setActivePlayer('white')
     }
   }
 
-  const resetTimer = () => {
-    setActivePlayer(null)
-    setBlackTimer(initialTimer * 1000);
-    setWhiteTimer(initialTimer * 1000);
+  const togglePause = () => {
+    if (isGameOver) {
+      return
+    }
+
+    if (activePlayer) { //pause
+      setPausedPlayer(activePlayer);
+      setActivePlayer(null);
+    } else { //unpause
+      setActivePlayer(pausedPlayer);
+      setPausedPlayer(null);
+    }
   }
 
-  return [whiteTimer, blackTimer, startTimer, activePlayer, toggleTimer, togglePause, resetTimer]
+  /**
+   * Reset the clock to initial state
+   */
+  const resetTimer = () => {
+
+    setActivePlayer(null)
+
+    clearInterval(intervalRef.current)
+    intervalRef.current = null
+
+    setBlackTimer(initialTime);
+    setWhiteTimer(initialTime);
+    setBlackTurn(0);
+    setWhiteTurn(0);
+  }
+
+  //Format player informations
+  const players = {
+    white: {
+      name: 'white',
+      isActive: activePlayer == 'white',
+      isPaused: pausedPlayer == 'white',
+      timer: whiteTimer,
+      turn: whiteTurn
+    },
+    black: {
+      name: 'black',
+      isActive: activePlayer == 'black',
+      isPaused: pausedPlayer == 'black',
+      timer: blackTimer,
+      turn: blackTurn
+    }
+  }
+
+  //Format clock informations, status & functions
+  const clock = {
+    activePlayer,
+    isActive: isClockActive,
+    isPaused: pausedPlayer !== null,
+    start: startTimer,
+    toggle: toggleTimer,
+    pause: togglePause,
+    reset: resetTimer
+  }
+
+
+  return [players, clock]
 
 }

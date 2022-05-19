@@ -4,20 +4,40 @@ import useChessClock from 'react-chess-clock'
 
 const App = () => {
 
-  const [whiteTimer, blackTimer, startTimer, activePlayer, toggleTimer, togglePause, resetTimer] = useChessClock()
+  const initialTimer = 2
+  const increment = 5
 
-  //Basic display
+  const [players, clock] = useChessClock(initialTimer, increment)
+
+  const {
+    white,
+    black
+  } = players;
+
+  const {
+    activePlayer,
+    isActive,
+    isPaused,
+    start,
+    toggle,
+    pause,
+    reset, } = clock;
+
   return (
     <div>
 
-      <p>Active Player : {activePlayer}</p>
-      <br />
-      <p>White timer : {whiteTimer}</p>
-      <p>Black timer : {blackTimer}</p>
-      <button onClick={() => toggleTimer()}>Toggle</button>
-      <button onClick={() => resetTimer()}>Reset Timer</button>
-      <button onClick={() => togglePause()}>Pause Timer</button>
-      <button onClick={() => startTimer()}>Start</button>
+      <p>Initial timer : {initialTimer}</p>
+      <p>Increment : {increment}</p>
+      <p>Active Player : {activePlayer ?? 'none'}</p>
+      <p>White player turns : {white.turn}</p>
+      <p>Black player turns : {black.turn}</p>
+      <p>White timer : {white.timer}</p>
+      <p>Black timer : {black.timer}</p>
+
+      <button onClick={() => toggle()}>Toggle</button>
+      <button onClick={() => reset()}>Reset Timer</button>
+      <button onClick={() => pause()}>Pause Timer</button>
+      <button onClick={() => start()}>Start</button>
     </div>
   )
 }
