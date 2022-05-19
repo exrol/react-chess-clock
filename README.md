@@ -36,7 +36,8 @@ const App = () => {
     start,
     toggle,
     pause,
-    reset, } = clock;
+    reset
+  } = clock;
 
   return (
     <div>
