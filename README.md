@@ -19,21 +19,88 @@ import useChessClock from 'react-chess-clock'
 
 const App = () => {
 
-  const [players, clock] = useChessClock()
+  const initialTimer = 2
+  const increment = 5
 
-  const {white, black} = players;
-  const {isActive, isPaused} = clock;
+  const [players, clock] = useChessClock(initialTimer, increment)
 
-  //Basic display
+  const {
+    white,
+    black
+  } = players;
+
+  const {
+    activePlayer,
+    isActive,
+    isPaused,
+    start,
+    toggle,
+    pause,
+    reset, } = clock;
+
   return (
     <div>
 
+      <p>Initial timer : {initialTimer}</p>
+      <p>Increment : {increment}</p>
+      <p>Active Player : {activePlayer ?? 'none'}</p>
+      <p>White player turns : {white.turn}</p>
+      <p>Black player turns : {black.turn}</p>
+      <p>White timer : {white.timer}</p>
+      <p>Black timer : {black.timer}</p>
+
+      <button onClick={() => toggle()}>Toggle</button>
+      <button onClick={() => reset()}>Reset Timer</button>
+      <button onClick={() => pause()}>Pause Timer</button>
+      <button onClick={() => start()}>Start</button>
     </div>
   )
 }
 
 export default App
 
+```
+
+### Players
+
+> Players object provides you informations about white and black player
+
+```js
+players = {
+    white: {
+      name,
+      isActive,
+      isPaused,
+      timer,
+      turn
+    },
+    black: {
+      name,
+      isActive,
+      isPaused,
+      timer,
+      turn
+    }
+  }
+  ```
+
+### Clock
+
+>  Clock object provides you informations about clock status & function to interact with the clock
+
+```js
+clock = {
+    //Informations
+    activePlayer
+    isActive
+    isPaused
+
+    //Functions
+    start
+    toggle
+    pause
+    reset
+  }
 ```
 
 ## License
