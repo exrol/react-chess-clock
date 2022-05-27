@@ -17,6 +17,7 @@ export default function useChessClock(initialTimer = 600, increment = 5) {
 
   //State accessors
   const isClockActive = activePlayer !== null;
+  const isClockPaused = pausedPlayer !== null;
   const isGameOver = blackTimer <= 0 || whiteTimer <= 0
 
   const intervalRef = useRef(null)
@@ -92,6 +93,7 @@ export default function useChessClock(initialTimer = 600, increment = 5) {
   const resetTimer = () => {
 
     setActivePlayer(null)
+    setPausedPlayer(null)
 
     clearInterval(intervalRef.current)
     intervalRef.current = null
@@ -124,7 +126,7 @@ export default function useChessClock(initialTimer = 600, increment = 5) {
   const clock = {
     activePlayer,
     isActive: isClockActive,
-    isPaused: pausedPlayer !== null,
+    isPaused: isClockPaused,
     start: startTimer,
     toggle: toggleTimer,
     pause: togglePause,

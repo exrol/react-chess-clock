@@ -4,7 +4,7 @@ import useChessClock from 'react-chess-clock'
 
 const App = () => {
 
-  const initialTimer = 2
+  const initialTimer = 60
   const increment = 5
 
   const [players, clock] = useChessClock(initialTimer, increment)
@@ -25,6 +25,8 @@ const App = () => {
 
   return (
     <div>
+
+      <p>isPaused: {isPaused ? 'OUI' : 'NON'}</p>
 
       <p>Initial timer : {initialTimer}</p>
       <p>Increment : {increment}</p>
